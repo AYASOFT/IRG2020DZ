@@ -1,0 +1,81 @@
+Function IRG(SOUMIS)
+    Dim BRTS, TAX, TB, IMPAN, IMPOTA, IMPM, ABAT, RET, RTS1, ABAT1 As Single
+    SOUMIS = SOUMIS / 10
+    SOUMIS = Fix(SOUMIS)
+    SOUMIS = SOUMIS * 10
+    BRTS = SOUMIS * 12
+    Select Case BRTS
+    Case Is < 120000
+        TAX = 0
+        IMPAN = 0
+        TB = 0
+    Case 120000 To 360000
+        TAX = 20
+        IMPAN = 0
+        TB = 120000
+    Case 360000 To 1440000
+        TAX = 30
+        IMPAN = 48000
+        TB = 360000
+    Case 1440000 To 9999999
+        TAX = 35
+        IMPAN = 372000
+        TB = 1440000
+    Case Else
+        TAX = 0
+        IMPAN = 3367999.65
+        TB = 9999999
+    End Select
+    
+    IMPOTA = ((BRTS - TB) * TAX / 100) + IMPAN
+    IMPM = IMPOTA / 12
+    ABAT = ((40 * IMPM) / 100)
+    ABAT1 = ABAT
+    Select Case ABAT
+    Case Is < 1000
+        ABAT = 1000
+    Case 1000 To 1500
+        ABAT = ABAT
+    Case Else
+        ABAT = 1500
+    End Select
+    
+    RET = IMPM - ABAT
+    
+    Select Case RET
+    Case Is < 0
+        RET = 0
+    Case Else
+        RET = RET
+    End Select
+
+    IRG = RET
+End Function
+
+Function CalculeIRG(SOUMIS)
+    Dim RESULT As Single
+    Select Case SOUMIS
+        Case Is <= 30000
+            RESULT = 0
+        Case 30000 To 35000
+            RESULT = (IRG(SOUMIS) * 8 / 3) - (20000 / 3)
+        Case Else
+            RESULT = IRG(SOUMIS)
+    End Select
+    
+    CalculeIRG = RESULT
+End Function
+
+Function CalculeIRGHR(SOUMIS)
+    Dim RESULTHR As Single
+    Select Case SOUMIS
+        Case Is <= 30000
+            RESULTHR = 0
+        Case 30000 To 40000
+            RESULTHR = (IRG(SOUMIS) * 5 / 3) - (12500 / 3)
+        Case Else
+            RESULTHR = IRG(SOUMIS)
+    End Select
+    
+    CalculeIRGHR = RESULTHR
+End Function
